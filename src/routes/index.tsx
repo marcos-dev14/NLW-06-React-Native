@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/auth";
 import { SingIn } from '../screens/SignIn';
 import { Background } from "../components/Background";
 
-import { AuthRoutes } from './auth.routes';
+import { AppRoutes } from './app.routes';
 
 export function Routes() {
   const { user } = useAuth();
@@ -14,7 +14,7 @@ export function Routes() {
   return (
     <Background>
       <NavigationContainer>
-        { user.id ? <AuthRoutes /> : <SingIn />}
+        { user.id ? <AppRoutes /> : <SingIn />}
       </NavigationContainer>
     </Background>
   );
