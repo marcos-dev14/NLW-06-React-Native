@@ -3,21 +3,29 @@ import {
   View, 
   Text,
   Image,
+  Alert,
+  ActivityIndicator
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import { Background } from '../../components/Background';
 
 import IllustrationImg from '../../assets/illustration.png';
 import { ButtonIcon } from '../../components/ButtonIcon';
 
+import { useAuth } from '../../hooks/auth';
+
+import { theme } from '../../global/styles/theme';
 import { styles } from './styles';
 
 export function SingIn() {
-  const navigation = useNavigation();
+  const { loading, SingInAuth } = useAuth();
 
-  function handleSignIn() {
-    navigation.navigate('Home');
+  async function handleSignInAuth() {
+    try {
+      await SingInAuth();
+    } catch (error) {
+      Alert.alert('Não foi possível autenticar');
+    }
   }
 
   return (
@@ -41,11 +49,15 @@ export function SingIn() {
             favoritos com seus amigos
           </Text>
 
-          <ButtonIcon 
-            title="Entrar com Discord"
-            activeOpacity={0.7}
-            onPress={handleSignIn}
-          />
+          {   
+            loading
+            ? <ActivityIndicator color={theme.colors.primary} />
+            : <ButtonIcon 
+                title="Entrar com Discord"
+                activeOpacity={0.7}
+                onPress={handleSignInAuth}
+              />
+          }
         </View>
       </View>
     </Background>

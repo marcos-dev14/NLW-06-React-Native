@@ -13,7 +13,6 @@ const { Navigator, Screen } = createNativeStackNavigator()
 export function AuthRoutes() {
   return (
     <Navigator
-      initialRouteName="SingIn"
       screenOptions={{
         headerShown: false,
         contentStyle: {
@@ -21,10 +20,6 @@ export function AuthRoutes() {
         }
       }}
     >
-       <Screen 
-        name="SingIn"
-        component={SingIn}
-      />
       <Screen 
         name="Home"
         component={Home}
