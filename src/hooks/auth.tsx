@@ -10,7 +10,7 @@ import {
   CLIENT_ID,
   SCOPE,
   CDN_IMAGE  
-} from '../configs';
+} from '@env';
 
 import { COLLECTION_USERS } from '../configs/database'; 
 
