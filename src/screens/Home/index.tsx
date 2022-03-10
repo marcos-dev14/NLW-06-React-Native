@@ -13,7 +13,6 @@ import { ListDivider } from '../../components/ListDivider';
 
 import { styles } from './styles';
 
-
 export function Home() {
   const [ category, setCategory ] = useState('');
 
