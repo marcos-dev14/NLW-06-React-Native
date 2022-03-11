@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Fontisto } from '@expo/vector-icons';
+import * as Linking from 'expo-linking';
 import { 
   Alert, 
   FlatList, 
@@ -50,7 +51,7 @@ export function AppointmentDetails() {
   async function fetchGuildWidget() {
     try {
       const response = await api.get(`/guilds/${guildSelected.guild.id}/widget.json`);
-      setWidget(response.data);
+      setWidget(response.data); 
 
     } catch (error) {
       Alert.alert('Verifique as configurações do servidor. Será que o Widget está habilitado?');
@@ -60,14 +61,18 @@ export function AppointmentDetails() {
   }
 
   function handleShareInvitation() {
-    const message = Platform.OS === 'ios'
+    const message = Platform.OS === 'ios' 
     ? `Junte-se a ${guildSelected.guild.name}`
     : widget.instant_invite;
 
     Share.share({
       message,
       url: widget.instant_invite
-    })
+    });    
+  }
+
+  function handleOpenGuild(){
+    Linking.openURL(widget.instant_invite);
   }
 
   useEffect(() => {
@@ -125,9 +130,17 @@ export function AppointmentDetails() {
           />
         </>
       }
-      <View style={styles.footer}>
-        <ButtonIcon title='Entrar na partida'/>
-      </View>
+
+      {
+         guildSelected.guild.owner &&
+         <View style={styles.footer}>
+          <ButtonIcon 
+            title='Entrar na partida'
+            onPress={handleOpenGuild}  
+          />
+        </View>
+      }
+     
     </Background>
   );
 }
