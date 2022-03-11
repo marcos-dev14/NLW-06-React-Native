@@ -4,7 +4,6 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Background } from '../../components/Background';
-
 import { ButtonAdd } from '../../components/ButtonAdd';
 import { CategorySelect } from '../../components/CategorySelect';
 import { Profile } from '../../components/Profile';
@@ -13,8 +12,9 @@ import { Appointment, AppointmentDataProps } from '../../components/Appointment'
 import { ListDivider } from '../../components/ListDivider';
 import { Load } from '../../components/Load';
 
-import { styles } from './styles';
 import { COLLECTION_APPOINTMENTS } from '../../configs/database';
+
+import { styles } from './styles';
 
 export function Home() {
   const [ category, setCategory ] = useState('');
@@ -27,8 +27,8 @@ export function Home() {
     categoryId === category ? setCategory('') : setCategory(categoryId)
   }
 
-  function handleAppointmentDetails() {
-    navigation.navigate('AppointmentDetails');
+  function handleAppointmentDetails(guildSelected: AppointmentDataProps) {
+        navigation.navigate('AppointmentDetails', { guildSelected });
   }
 
   function handleAppointmentCreate() {
@@ -69,7 +69,7 @@ export function Home() {
         <>
           <ListHeader 
             title="Partidas agendadas"
-            subTitle="Total 6"
+            subTitle={`Total ${appointments.length}`}
           />
 
           <FlatList 
@@ -78,7 +78,7 @@ export function Home() {
             renderItem={({ item }) => (
               <Appointment 
                 data={item}
-                onPress={handleAppointmentDetails}  
+                onPress={() => handleAppointmentDetails(item)}  
               />
             )}
             ItemSeparatorComponent={() => <ListDivider />}
