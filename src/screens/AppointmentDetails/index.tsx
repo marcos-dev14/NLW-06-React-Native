@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Fontisto } from '@expo/vector-icons';
-import { Alert, FlatList, ImageBackground, Text, View } from 'react-native';
+import { 
+  Alert, 
+  FlatList, 
+  ImageBackground, 
+  Text, 
+  View,
+  Share,
+  Platform,
+  TouchableOpacity
+} from 'react-native';
 
 import { Background } from '../../components/Background';
 import { Header } from '../../components/Header';
@@ -18,7 +27,6 @@ import { styles } from './styles';
 
 import { AppointmentDataProps } from '../../components/Appointment';
 import { api } from '../../services/api';
-import { GuildDataProps } from '../../components/Guild';
 import { Load } from '../../components/Load';
 
 type ParamsProps = {
@@ -51,6 +59,17 @@ export function AppointmentDetails() {
     }
   }
 
+  function handleShareInvitation() {
+    const message = Platform.OS === 'ios'
+    ? `Junte-se a ${guildSelected.guild.name}`
+    : widget.instant_invite;
+
+    Share.share({
+      message,
+      url: widget.instant_invite
+    })
+  }
+
   useEffect(() => {
     fetchGuildWidget();
   },[])
@@ -60,13 +79,14 @@ export function AppointmentDetails() {
       <Header 
         title="Detalhes"
         action={
-          <BorderlessButton>
+          guildSelected.guild.owner &&
+          <TouchableOpacity activeOpacity={0.7} onPress={handleShareInvitation}>
             <Fontisto 
               name="share"
               size={24}
               color={theme.colors.primary}
             />
-          </BorderlessButton>
+          </TouchableOpacity>
         }
       />
       
