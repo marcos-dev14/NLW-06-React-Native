@@ -26,7 +26,8 @@ type UserProps = {
 type AuthContextDataProps = {
   user: UserProps;
   loading: boolean;
-  SingInAuth: () => Promise<void>;
+  singInAuth: () => Promise<void>;
+  singOutAuth: () => Promise<void>;
 }
 
 type AuthProviderProps = {
@@ -46,7 +47,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [ user, setUser ] = useState<UserProps>({} as UserProps);
   const [ loading, setLoading ] = useState(false);
 
-  async function SingInAuth() {
+  async function singInAuth() {
     try {
       setLoading(true);
   
@@ -78,6 +79,11 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function singOutAuth() {
+    setUser({} as UserProps);
+    await AsyncStorage.removeItem(COLLECTION_USERS);    
+  }
+
   async function loadUserStorageData() {
     const storage = await AsyncStorage.getItem(COLLECTION_USERS);
     
@@ -97,7 +103,8 @@ function AuthProvider({ children }: AuthProviderProps) {
     <AuthContext.Provider value={{
       user,
       loading,
-      SingInAuth
+      singInAuth,
+      singOutAuth
     }}>
       {children}
     </AuthContext.Provider>

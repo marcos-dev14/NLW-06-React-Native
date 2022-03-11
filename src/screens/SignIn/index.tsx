@@ -18,11 +18,11 @@ import { theme } from '../../global/styles/theme';
 import { styles } from './styles';
 
 export function SingIn() {
-  const { loading, SingInAuth } = useAuth();
+  const { loading, singInAuth } = useAuth();
 
   async function handleSignInAuth() {
     try {
-      await SingInAuth();
+      await singInAuth();
     } catch (error) {
       Alert.alert('Não foi possível autenticar');
     }
